@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from 'react-native';
 
 import styles from './styles';
@@ -47,6 +48,8 @@ export default class Teste extends Component {
   //variavel de estado username digitada pelo usuario no campo text input
   state = {
     username: '',
+    loading: false,
+    errorMessage: null
   }
 
   // verificando se o usuario de fato existe
@@ -62,6 +65,10 @@ export default class Teste extends Component {
 
     // verifica tamanho da string que foi passada
     if (username.lenght === 0) return;
+
+    // mantem a barra de carregamento
+
+    this.setState({loading: true});
 
     // try : executa a primeira linha, se a resposta der certo, executa o que aconteceu dentro do escopo
 
@@ -85,10 +92,34 @@ export default class Teste extends Component {
 
     catch(err){
 
+      this.setState({loading: false , errorMessage:'Usuário não existe'});
 
 
     }
   };
+
+/*
+
+  Aplicando o loading dentro do button enquanto o programa faz a requisicao
+
+  <View  style={styles.button}>
+  <TouchableOpacity onPress={this.signIn}>
+  {this.state.loading
+  // se estiver loading, ou seja ( se this.state.loading existe)
+  ? <ActivityIndicator size:"small" color = "#FFF"/>
+  // se nao estiver , ou seja ( se this.state.loading  não existe existe)
+  : <Text style={styles.buttontext}>Clique aqui</Text>}
+
+  </TouchableOpacity>
+  </View>
+  */
+
+  /* Apresentando uma mensagem de erro caso o usuario  não exista
+  !! : certificando que o resultado da expressão é booleano
+  && : porta and, executa a próxima ação só se a afirmação anterior seja verdadeira (true)
+  {!!this.state.errorMessage
+  && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+  */
 
   render() {
     return (
@@ -96,6 +127,9 @@ export default class Teste extends Component {
 
       <Text style={styles.title}>Seja Bem-Vindo</Text>
       <Text style={styles.text}>Para continuar, informe seu login no Github:</Text>
+
+      {!!this.state.errorMessage
+      && <Text style={styles.error}>{this.state.errorMessage}</Text>}
 
       <View style={styles.form}>
       <TextInput
@@ -113,7 +147,10 @@ export default class Teste extends Component {
 
       <View  style={styles.button}>
       <TouchableOpacity onPress={this.signIn}>
-      <Text style={styles.buttontext}>Clique aqui</Text>
+      {this.state.loading
+      ? <ActivityIndicator size ="small" color = "#FFF"/>
+      : <Text style={styles.buttontext}>Clique aqui</Text>}
+
       </TouchableOpacity>
       </View>
 

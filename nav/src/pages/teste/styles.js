@@ -53,9 +53,17 @@ const styles = StyleSheet.create({
   buttontext:
   {
     color: colors.white
+  },
+
+  error: {
+    color: colors.danger,
+    textAlign: 'center',
+    marginTop: metrics.baseMargin
+
+
   }
 
-  
+
 });
 
 export default styles;
